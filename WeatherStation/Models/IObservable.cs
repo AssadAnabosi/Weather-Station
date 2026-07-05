@@ -1,7 +1,7 @@
 ﻿namespace WeatherStation.Models;
 
-public interface IObservable<T>
+public interface IObservable<T1, T2>
 {
-    void RegisterObserver(IObserver<T> observer);
-    void NotifyObservers();
+    void RegisterObserver(T1 observer);
+    void NotifyObservers(T2 data);
 }
