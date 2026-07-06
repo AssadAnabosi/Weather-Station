@@ -11,6 +11,7 @@ foreach (var bot in bots)
 
 var weatherParser = new CompositeWeatherDataParser();
 weatherParser.RegisterParser(new JsonWeatherDataParser());
+weatherParser.RegisterParser(new XmlWeatherDataParser());
 
 while (true)
 {
