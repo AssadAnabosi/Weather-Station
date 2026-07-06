@@ -1,5 +1,6 @@
 ﻿using WeatherStation.Models;
 using WeatherStation.Models.Bots;
+using WeatherStation.Models.Parsers;
 
 var configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
 var bots = BotLoader.LoadFromConfigurationFile(configPath);
@@ -8,30 +9,29 @@ var weatherStation = new Station();
 foreach (var bot in bots)
     weatherStation.RegisterObserver(bot);
 
-var w1 = new WeatherData
+var weatherParser = new CompositeWeatherDataParser();
+
+while (true)
 {
-    Location = "Jenin",
-    Temperature = 33,
-    Humidity = 50,
-};
-var w2 = new WeatherData
-{
-    Location = "Nablus",
-    Temperature = 20,
-    Humidity = 71,
-};
-var w3 = new WeatherData
-{
-    Location = "Ramallah",
-    Temperature = -5,
-    Humidity = 72,
-};
-Console.WriteLine();
-Console.WriteLine(w1);
-weatherStation.NotifyObservers(w1);
-Console.WriteLine();
-Console.WriteLine(w2);
-weatherStation.NotifyObservers(w2);
-Console.WriteLine();
-Console.WriteLine(w3);
-weatherStation.NotifyObservers(w3);
+    Console.Write("Enter weather data (or 'exit' to quit): ");
+    var input = Console.ReadLine()?.Trim();
+
+    if (string.IsNullOrEmpty(input))
+        continue;
+
+    if (input == "exit" || input == "quit")
+        break;
+
+    try
+    {
+        var data = weatherParser.Parse(input);
+        Console.WriteLine(data);
+        weatherStation.NotifyObservers(data);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Error: {e.Message}");
+    }
+
+    Console.WriteLine();
+}
