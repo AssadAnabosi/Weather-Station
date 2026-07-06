@@ -10,6 +10,7 @@ foreach (var bot in bots)
     weatherStation.RegisterObserver(bot);
 
 var weatherParser = new CompositeWeatherDataParser();
+weatherParser.RegisterParser(new JsonWeatherDataParser());
 
 while (true)
 {
