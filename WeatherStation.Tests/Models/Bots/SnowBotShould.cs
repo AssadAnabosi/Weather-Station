@@ -8,7 +8,7 @@ namespace WeatherStation.Tests.Models.Bots;
 public class SnowBotShould
 {
     [Fact]
-    public void EmptyString_WhenDisabled()
+    public void ReturnNull_WhenDisabled()
     {
         SnowBot bot = new()
         {
@@ -16,7 +16,7 @@ public class SnowBotShould
             TemperatureThreshold = 0,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -24,11 +24,12 @@ public class SnowBotShould
                 Temperature = -15,
                 Humidity = 80,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
 
     [Fact]
-    public void EmptyString_WhenThresholdNotMet()
+    public void ReturnNull_WhenThresholdNotMet()
     {
         SnowBot bot = new()
         {
@@ -36,7 +37,7 @@ public class SnowBotShould
             TemperatureThreshold = 0,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -44,11 +45,12 @@ public class SnowBotShould
                 Temperature = 20,
                 Humidity = 60,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
 
     [Fact]
-    public void ResultWhenThresholdMet()
+    public void ReturnResult_WhenThresholdMet()
     {
         var msg = "Brrr, it's getting chilly!";
         SnowBot bot = new()
@@ -57,8 +59,10 @@ public class SnowBotShould
             TemperatureThreshold = 0,
             Message = msg
         };
+
         var expected = $"SnowBot activated!\n" +
                        $"SnowBot: \"{msg}\"";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -66,6 +70,7 @@ public class SnowBotShould
                 Temperature = -15,
                 Humidity = 80,
             });
+
         Assert.Equal(expected, actual);
     }
 }

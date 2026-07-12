@@ -8,7 +8,7 @@ namespace WeatherStation.Tests.Models.Bots;
 public class RainBotShould
 {
     [Fact]
-    public void EmptyString_WhenDisabled()
+    public void ReturnNull_WhenDisabled()
     {
         RainBot bot = new()
         {
@@ -16,7 +16,7 @@ public class RainBotShould
             HumidityThreshold = 70,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -24,11 +24,12 @@ public class RainBotShould
                 Temperature = 20,
                 Humidity = 71,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
 
     [Fact]
-    public void EmptyString_WhenThresholdNotMet()
+    public void ReturnNull_WhenThresholdNotMet()
     {
         RainBot bot = new()
         {
@@ -36,7 +37,7 @@ public class RainBotShould
             HumidityThreshold = 70,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -44,11 +45,12 @@ public class RainBotShould
                 Temperature = 20,
                 Humidity = 60,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
-    
+
     [Fact]
-    public void ResultWhenThresholdMet()
+    public void ReturnResult_WhenThresholdMet()
     {
         var msg = "It looks like it's about to pour down!";
         RainBot bot = new()
@@ -57,8 +59,10 @@ public class RainBotShould
             HumidityThreshold = 70,
             Message = msg
         };
+
         var expected = $"RainBot activated!\n" +
                        $"RainBot: \"{msg}\"";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -66,6 +70,7 @@ public class RainBotShould
                 Temperature = 20,
                 Humidity = 71,
             });
+
         Assert.Equal(expected, actual);
     }
 }

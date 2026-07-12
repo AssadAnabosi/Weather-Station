@@ -7,9 +7,9 @@ public class SunBot : IWeatherBot
     public double TemperatureThreshold { get; set; }
     public string Message { get; set; } = string.Empty;
 
-    public string Update(WeatherData data)
+    public string? Update(WeatherData data)
     {
-        if (!Enabled || data.Temperature <= TemperatureThreshold) return "";
+        if (!Enabled || data.Temperature <= TemperatureThreshold) return null;
 
         return $"{Name} activated!\n" +
                $"{Name}: \"{Message}\"";

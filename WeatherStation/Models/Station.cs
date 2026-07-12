@@ -16,7 +16,7 @@ public class Station : IObservable<IWeatherBot, WeatherData>
         foreach (var observer in _observers)
         {
             var result = observer.Update(data);
-            if (result.Length !=0)
+            if (result != null)
                 Console.WriteLine(result);
         }
             

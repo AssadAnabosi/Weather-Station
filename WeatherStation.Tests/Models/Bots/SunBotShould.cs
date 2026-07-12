@@ -8,7 +8,7 @@ namespace WeatherStation.Tests.Models.Bots;
 public class SunBotShould
 {
     [Fact]
-    public void EmptyString_WhenDisabled()
+    public void ReturnNull_WhenDisabled()
     {
         SunBot bot = new()
         {
@@ -16,7 +16,7 @@ public class SunBotShould
             TemperatureThreshold = 30,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -24,11 +24,12 @@ public class SunBotShould
                 Temperature = 35,
                 Humidity = 40,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
 
     [Fact]
-    public void EmptyString_WhenThresholdNotMet()
+    public void ReturnNull_WhenThresholdNotMet()
     {
         SunBot bot = new()
         {
@@ -36,7 +37,7 @@ public class SunBotShould
             TemperatureThreshold = 30,
             Message = "This Should not be displayed"
         };
-        var expected = "";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -44,11 +45,12 @@ public class SunBotShould
                 Temperature = 20,
                 Humidity = 60,
             });
-        Assert.Equal(expected, actual);
+
+        Assert.Null(actual);
     }
 
     [Fact]
-    public void ResultWhenThresholdMet()
+    public void Result_WhenThresholdMet()
     {
         var msg = "Wow, it's a scorcher out there!";
         SunBot bot = new()
@@ -57,8 +59,10 @@ public class SunBotShould
             TemperatureThreshold = 30,
             Message = msg
         };
+
         var expected = $"SunBot activated!\n" +
                        $"SunBot: \"{msg}\"";
+
         var actual = bot.Update(
             new WeatherData
             {
@@ -66,6 +70,7 @@ public class SunBotShould
                 Temperature = 35,
                 Humidity = 40,
             });
+
         Assert.Equal(expected, actual);
     }
 }

@@ -7,9 +7,9 @@ public class RainBot : IWeatherBot
     public double HumidityThreshold { get; set; }
     public string Message { get; set; } = string.Empty;
 
-    public string Update(WeatherData data)
+    public string? Update(WeatherData data)
     {
-        if (!Enabled || data.Humidity <= HumidityThreshold) return "";
+        if (!Enabled || data.Humidity <= HumidityThreshold) return null;
 
         return $"{Name} activated!\n" +
                $"{Name}: \"{Message}\"";
