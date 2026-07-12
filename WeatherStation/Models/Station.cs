@@ -14,6 +14,11 @@ public class Station : IObservable<IWeatherBot, WeatherData>
     public void NotifyObservers(WeatherData data)
     {
         foreach (var observer in _observers)
-            observer.Update(data);
+        {
+            var result = observer.Update(data);
+            if (result.Length !=0)
+                Console.WriteLine(result);
+        }
+            
     }
 }
