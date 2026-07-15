@@ -25,7 +25,7 @@ public class BotLoaderShould : IDisposable
                                   "SnowBot": { "enabled": false, "temperatureThreshold": 0, "message": "Snow!" }
                                 }
                                 """);
-        List<IWeatherBot> bots = BotLoader.LoadFromConfigurationFile(_path);
+        List<WeatherBot> bots = BotLoader.LoadFromConfigurationFile(_path);
         bots.ForEach(b=>_output.WriteLine(b.ToString()));
         Assert.Equal(3, bots.Count);
         Assert.Contains(bots, b => b.Name == "RainBot");

@@ -2,11 +2,11 @@
 
 namespace WeatherStation.Models;
 
-public class Station : IObservable<IWeatherBot, WeatherData>
+public class Station : IObservable<WeatherBot, WeatherData>
 {
-    private List<IWeatherBot> _observers = new();
+    private List<WeatherBot> _observers = new();
 
-    public void RegisterObserver(IWeatherBot observer)
+    public void RegisterObserver(WeatherBot observer)
     {
         _observers.Add(observer);
     }

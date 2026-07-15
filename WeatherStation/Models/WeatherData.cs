@@ -6,7 +6,7 @@ public class WeatherData
     public required double Temperature { get; set; }
     public required double Humidity { get; set; }
 
-    override public string ToString()
+    public override string ToString()
     {
         return $"{Location}: {Temperature}°, {Humidity}%";
     }
