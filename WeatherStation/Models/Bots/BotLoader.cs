@@ -27,7 +27,7 @@ public static class BotLoader
     private static WeatherBot? CreateBot(string name, JsonElement element)
     {
         var enabled = element.GetProperty("enabled").GetBoolean();
-        var message = element.GetProperty("message").GetString();
+        var message = element.GetProperty("message").GetString()!;
 
         return name switch
         {

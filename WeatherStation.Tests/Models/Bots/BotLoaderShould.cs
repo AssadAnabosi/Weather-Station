@@ -19,14 +19,14 @@ public class BotLoaderShould : IDisposable
     public void LoadBotsFromFile()
     {
         _path = CreateTempConfig("""
-                                {
-                                  "RainBot": { "enabled": true, "humidityThreshold": 70, "message": "Rain!" },
-                                  "SunBot": { "enabled": true, "temperatureThreshold": 30, "message": "Sun!" },
-                                  "SnowBot": { "enabled": false, "temperatureThreshold": 0, "message": "Snow!" }
-                                }
-                                """);
+                                 {
+                                   "RainBot": { "enabled": true, "humidityThreshold": 70, "message": "Rain!" },
+                                   "SunBot": { "enabled": true, "temperatureThreshold": 30, "message": "Sun!" },
+                                   "SnowBot": { "enabled": false, "temperatureThreshold": 0, "message": "Snow!" }
+                                 }
+                                 """);
         List<WeatherBot> bots = BotLoader.LoadFromConfigurationFile(_path);
-        bots.ForEach(b=>_output.WriteLine(b.ToString()));
+        bots.ForEach(b => _output.WriteLine(b.ToString()));
         Assert.Equal(3, bots.Count);
         Assert.Contains(bots, b => b.Name == "RainBot");
         Assert.Contains(bots, b => b.Name == "SunBot");
@@ -35,7 +35,7 @@ public class BotLoaderShould : IDisposable
         Assert.Contains(bots, b => !b.Enabled);
         Assert.All(bots, b => Assert.True(b.Message.Length > 0));
     }
-    
+
     [Fact]
     public void LoadBotsFromFile_SkipUnknownBots()
     {
@@ -54,6 +54,29 @@ public class BotLoaderShould : IDisposable
     {
         Assert.ThrowsAny<Exception>(() => BotLoader.LoadFromConfigurationFile("nonexistent.json"));
     }
+
+    [Theory]
+    [InlineData("""
+                {
+                  "RainBot": { "humidityThreshold": 70, "message": "Rain!" }
+                }
+                """)]
+    [InlineData("""
+                {
+                  "RainBot": { "enabled": true, "message": "Rain!" }
+                }
+                """)]
+    [InlineData("""
+                {
+                  "RainBot": { "enabled": true, "humidityThreshold": 70, }
+                }
+                """)]
+    public void LoadFromFile_InvalidConfiguration_ThrowsException(string jsonConfig)
+    {
+        var path = CreateTempConfig(jsonConfig);
+        Assert.ThrowsAny<Exception>(() => BotLoader.LoadFromConfigurationFile(path));
+    }
+
 
     public void Dispose()
     {
