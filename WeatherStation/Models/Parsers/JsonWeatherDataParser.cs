@@ -11,7 +11,7 @@ public class JsonWeatherDataParser : IWeatherDataParser
 
     public WeatherData Parse(string input)
     {
-        return JsonSerializer.Deserialize<WeatherData>(input) ??
+        return JsonSerializer.Deserialize<WeatherData?>(input) ??
                throw new FormatException("Invalid JSON: Failed to parse JSON weather data.");
     }
 }
