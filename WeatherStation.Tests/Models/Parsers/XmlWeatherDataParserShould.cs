@@ -9,13 +9,13 @@ namespace WeatherStation.Tests.Models.Parsers;
 [TestSubject(typeof(XmlWeatherDataParser))]
 public class XmlWeatherDataParserShould
 {
-    private readonly XmlWeatherDataParser _XmlWeatherDataParser;
+    private readonly XmlWeatherDataParser _xmlWeatherDataParser;
     private readonly ITestOutputHelper _output;
 
     public XmlWeatherDataParserShould(ITestOutputHelper output)
     {
         _output = output;
-        _XmlWeatherDataParser = new XmlWeatherDataParser();
+        _xmlWeatherDataParser = new XmlWeatherDataParser();
     }
 
     [Theory]
@@ -25,7 +25,7 @@ public class XmlWeatherDataParserShould
     [InlineData("<>", true)]
     public void ParseXml(string input, bool result)
     {
-        bool actual = _XmlWeatherDataParser.Parsable(input);
+        bool actual = _xmlWeatherDataParser.Parsable(input);
 
         Assert.Equal(result, actual);
     }
@@ -37,11 +37,17 @@ public class XmlWeatherDataParserShould
         Dictionary<string, string> input,
         WeatherData expected)
     {
-        WeatherData actual = _XmlWeatherDataParser.Parse(input["XML"]);
+        WeatherData actual = _xmlWeatherDataParser.Parse(input["XML"]);
 
         Assert.Equal(expected.Location, actual.Location);
         Assert.Equal(expected.Temperature, actual.Temperature);
         Assert.Equal(expected.Humidity, actual.Humidity);
+    }
+
+    [Fact]
+    public void ThrowsArgumentNullExceptionWhenInputIsNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => _xmlWeatherDataParser.Parse(null));
     }
     
 }
