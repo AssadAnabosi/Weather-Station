@@ -2,11 +2,11 @@
 
 namespace WeatherStation.Models;
 
-public class Station : IObservable<IWeatherBot, WeatherData>
+public class Station : IObservable<WeatherBot, WeatherData>
 {
-    private List<IWeatherBot> _observers = new();
+    private List<WeatherBot> _observers = new();
 
-    public void RegisterObserver(IWeatherBot observer)
+    public void RegisterObserver(WeatherBot observer)
     {
         _observers.Add(observer);
     }
@@ -14,6 +14,11 @@ public class Station : IObservable<IWeatherBot, WeatherData>
     public void NotifyObservers(WeatherData data)
     {
         foreach (var observer in _observers)
-            observer.Update(data);
+        {
+            var result = observer.Update(data);
+            if (result != null)
+                Console.WriteLine(result);
+        }
+            
     }
 }

@@ -1,17 +1,12 @@
 ﻿namespace WeatherStation.Models.Bots;
 
-public class RainBot : IWeatherBot
+public sealed class RainBot : WeatherBot
 {
-    public string Name => "RainBot";
-    public bool Enabled { get; set; }
+    public override string Name => "RainBot";
     public double HumidityThreshold { get; set; }
-    public string Message { get; set; } = string.Empty;
 
-    public void Update(WeatherData data)
+    protected override bool IsThresholdMet(WeatherData data)
     {
-        if (!Enabled || data.Humidity <= HumidityThreshold) return;
-
-        Console.WriteLine($"{Name} activated!");
-        Console.WriteLine($"{Name}: \"{Message}\"");
+        return data.Humidity >= HumidityThreshold;
     }
 }

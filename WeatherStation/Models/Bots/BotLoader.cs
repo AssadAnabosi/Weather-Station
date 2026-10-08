@@ -4,13 +4,13 @@ namespace WeatherStation.Models.Bots;
 
 public static class BotLoader
 {
-    public static List<IWeatherBot> LoadFromConfigurationFile(string filePath)
+    public static List<WeatherBot> LoadFromConfigurationFile(string filePath)
     {
         var json = File.ReadAllText(filePath);
         var config = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json)
                      ?? throw new InvalidOperationException("Failed To Load From Configuration File");
 
-        var bots = new List<IWeatherBot>();
+        var bots = new List<WeatherBot>();
 
         foreach (var (name, element) in config)
         {
@@ -24,10 +24,10 @@ public static class BotLoader
         return bots;
     }
 
-    private static IWeatherBot? CreateBot(string name, JsonElement element)
+    private static WeatherBot? CreateBot(string name, JsonElement element)
     {
         var enabled = element.GetProperty("enabled").GetBoolean();
-        var message = element.GetProperty("message").GetString();
+        var message = element.GetProperty("message").GetString()!;
 
         return name switch
         {

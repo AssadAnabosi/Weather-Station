@@ -1,17 +1,12 @@
 ﻿namespace WeatherStation.Models.Bots;
 
-public class SunBot : IWeatherBot
+public sealed class SunBot : WeatherBot
 {
-    public string Name => "SunBot";
-    public bool Enabled { get; set; }
+    public override string Name => "SunBot";
     public double TemperatureThreshold { get; set; }
-    public string Message { get; set; } = string.Empty;
 
-    public void Update(WeatherData data)
+    protected override bool IsThresholdMet(WeatherData data)
     {
-        if (!Enabled || data.Temperature <= TemperatureThreshold) return;
-
-        Console.WriteLine($"{Name} activated!");
-        Console.WriteLine($"{Name}: \"{Message}\"");
+        return data.Temperature >= TemperatureThreshold;
     }
 }

@@ -1,12 +1,19 @@
 ﻿namespace WeatherStation.Models;
 
-public class WeatherData
+public struct WeatherData
 {
+    public WeatherData()
+    {
+        Location = string.Empty;
+        Temperature = 0;
+        Humidity = 0;
+    }
+
     public required string Location { get; set; } = string.Empty;
     public required double Temperature { get; set; }
     public required double Humidity { get; set; }
 
-    override public string ToString()
+    public override string ToString()
     {
         return $"{Location}: {Temperature}°, {Humidity}%";
     }
